@@ -1,83 +1,86 @@
-const numBtns = document.querySelectorAll('.btn__main')
-const symBtns = document.querySelectorAll('.btn__sub')
-const output = document.querySelector('.output')
-const clearbtn = document.querySelector('.btn_clear')
-const deletebtn = document.querySelector('.btn_delete')
+const numBtns = document.querySelectorAll(".btn__main");
+const symBtns = document.querySelectorAll(".btn__sub");
+const operation = document.querySelector(".operation");
+const output = document.querySelector(".output");
+const clearbtn = document.querySelector(".btn_clear");
+const deletebtn = document.querySelector(".btn_delete");
 
-let num1, num2
+let num1 = null,
+num2 = null;
 
-const displayValue = (num) => {
-  if (output.innerText.includes('.') && num === 'decimal') return
-  if (num === 'decimal') {
-    num = '.'
-    output.innerText += num
-    return
+const bottomDisplayValue = (num) => {
+  if (output.innerText.includes(".") && num === "decimal") return;
+  if (num === "decimal") {
+    num = ".";
+    output.innerText += num;
+    return;
   }
-  if (output.innerText === '0') {
-    output.innerText = ''
+  if (output.innerText === "0") {
+    output.innerText = "";
   }
-  output.innerText += num
-  num1 = output.innerText
-  return num1
-}
+  output.innerText += num;
+  num1 = output.innerText;
+};
 
-const compDisplay = () => {}
-
-const operate = (num1, num2, operator) => {
-  console.log('test', operator)
+const operate = (operator) => {
   switch (operator) {
-    case 'divide':
-      divide(num1, num2)
-      break
-    case 'multiply':
-      multiply(num1, num2)
-      break
-    case 'add':
-      add(num1, num2)
-      break
-    case 'subtract':
-      subtract(num1, num2)
+    case "divide":
+      divide(num1, num2);
+      break;
+    case "multiply":
+      multiply(num1, num2);
+      break;
+    case "add":
+      add(num1, num2);
+      break;
+    case "subtract":
+      subtract(num1, num2);
+      break;
   }
-}
+};
 
-const add = (num1, num2) => {}
+const add = (num1, num2) => {
+  return num1 + num2;
+};
 
-const subtract = (num1, num2) => {}
+const subtract = (num1, num2) => {
+  return num1 - num2;
+};
 
-const multiply = (num1, num2) => {}
+const multiply = (num1, num2) => {
+  return num1 * num2;
+};
 
-const divide = (num1, num2) => {}
+const divide = (num1, num2) => {
+  return num1 / num2;
+};
 
 const clearInput = () => {
-  output.innerText = '0'
-}
+  output.innerText = "0";
+};
 
 const deleteChar = () => {
   if (output.innerText == 0) {
-    return
+    return;
   }
-  output.innerText = output.innerText.slice(0, -1)
+  output.innerText = output.innerText.slice(0, -1);
   if (output.innerText < 1) {
-    output.innerText = 0
+    output.innerText = 0;
   }
-}
+};
 
 numBtns.forEach((button) => {
-  button.addEventListener('click', (e) => {
-    displayValue(e.target.id)
-  })
-})
+  button.addEventListener("click", (e) => {
+    bottomDisplayValue(e.target.id);
+  });
+});
 
 symBtns.forEach((button) => {
-  button.addEventListener('click', (e) => {
-    operate(num1, num2, e.target.id)
-  })
-})
+  button.addEventListener("click", (e) => {
+    operate(e.target.id);
+  });
+});
 
-clearbtn.addEventListener('click', () => {
-  clearInput()
-})
+clearbtn.addEventListener("click", clearInput);
 
-deletebtn.addEventListener('click', () => {
-  deleteChar()
-})
+deletebtn.addEventListener("click", deleteChar);
