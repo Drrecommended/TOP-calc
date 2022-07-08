@@ -1,92 +1,95 @@
-const numBtns = document.querySelectorAll('.btn__main')
-const symBtns = document.querySelectorAll('.btn__sub')
-const operation = document.querySelector('.operation')
-const output = document.querySelector('.output')
-const resetbtn = document.querySelector('.btn_reset')
-const deletebtn = document.querySelector('.btn_delete')
+const numberButtons = document.querySelectorAll(".number-btn");
+const operators = document.querySelectorAll(".operator");
+const operation = document.querySelector(".operation");
+const input = document.querySelector(".input");
+const equal = document.querySelector("#equal");
+const resetBtn = document.querySelector(".btn_reset");
 
-let num1 = null,
-  num2 = null
+let operand,
+  num1,
+  num2 = null;
 
-const getNum = (num) => {
-  if (output.innerText.includes('.') && num === 'decimal') return
-  if (num === 'decimal') {
-    num = '.'
-    output.innerText += num
-    return
+const collectInput = (e) => {
+  let num = e.target.id;
+  if (input.innerText === "0") {
+    input.innerText = "";
   }
-  if (output.innerText === '0') {
-    output.innerText = ''
+  input.innerText += num;
+  if (operand) {
+    num2 = parseInt(input.innerText);
+  } else {
+    num1 = parseInt(input.innerText);
   }
-  output.innerText += num
-  num1 = output.innerText
-}
+  console.log(num1, num2);
+};
 
-const operate = (operator) => {
-  updateUI(operator, num1, num2)
-  switch (operator) {
-    case 'divide':
-      divide(num1, num2)
-      break
-    case 'multiply':
-      multiply(num1, num2)
-      break
-    case 'add':
-      add(num1, num2)
-      break
-    case 'subtract':
-      subtract(num1, num2)
-      break
+const getOperator = (e) => {
+  if (operand !== null) operate();
+  operand = e.target.innerText;
+  displayOperation();
+};
+
+const operate = () => {
+  let result;
+  if (num2 === null) return;
+
+  switch (operand) {
+    case "÷":
+      result = divide();
+      break;
+    case "×":
+      result = multiply();
+      break;
+    case "−":
+      result = subtract();
+      break;
+    case "+":
+      result = add();
+      break;
   }
-}
+  displayOperation(result);
+};
 
-const add = (num1, num2) => {
-  return num1 + num2
-}
+const displayOperation = (result) => {
+  if (num2 === null) {
+    operation.innerText = `${num1} ${operand}`;
+    input.innerText = "0";
+  } else {
+    operation.innerText = `${num1} ${operand} ${num2}`;
+    input.innerText = result.toString();
+  }
+};
 
-const subtract = (num1, num2) => {
-  return num1 - num2
-}
+const add = () => {
+  return num1 + num2;
+};
 
-const multiply = (num1, num2) => {
-  return num1 * num2
-}
+const subtract = () => {
+  return num1 - num2;
+};
 
-const divide = (num1, num2) => {
-  return num1 / num2
-}
+const multiply = () => {
+  return num1 * num2;
+};
 
-//update UI
-const updateUI = (operator, num1, num2) => {
-    operation.innerText = `${num1} ${operator}`
-}
+const divide = () => {
+  return num1 / num2;
+};
 
 const reset = () => {
-  output.innerText = '0'
-}
+  operation.innerText = "";
+  input.innerText = "0";
+  operand = null;
+  num1 = null;
+  num2 = null;
+};
 
-const deleteChar = () => {
-  if (output.innerText == 0) {
-    return
-  }
-  output.innerText = output.innerText.slice(0, -1)
-  if (output.innerText < 1) {
-    output.innerText = 0
-  }
-}
+numberButtons.forEach((number) =>
+  number.addEventListener("click", collectInput)
+);
+operators.forEach((operator) =>
+  operator.addEventListener("click", getOperator)
+);
 
-numBtns.forEach((button) => {
-  button.addEventListener('click', (e) => {
-    getNum(e.target.id)
-  })
-})
-
-symBtns.forEach((button) => {
-  button.addEventListener('click', (e) => {
-    operate(e.target.id)
-  })
-})
-
-resetbtn.addEventListener('click', reset)
-
-deletebtn.addEventListener('click', deleteChar)
+equal.addEventListener("click", operate);
+resetBtn.addEventListener("click", reset);
