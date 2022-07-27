@@ -1,10 +1,37 @@
+h1, .credits{
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  text-align: center;
+  margin-top: 3em;
+}
+
+.credits {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.credits img {
+  height: 16px;
+}
+
+body {
+  background-color: #6da4f7;
+
+}
+
 .calculator {
   width: 375px;
   padding-top: 0.5em;
-  border-radius: 5px;
+  border: 2px solid rgb(79, 76, 76);
   margin: 0 auto;
-  margin-top: 3em;
-  background-color: rgb(50, 43, 43);
+  margin-top: 80px;
+  background-color: rgb(174, 166, 166);
+}
+
+.calculator,
+.display,
+.btn__main {
+  border-radius: 5px;
 }
 
 .control_btn__container {
@@ -35,24 +62,25 @@ button:hover {
 
 .display {
   margin: 0 auto;
-  background-color: rgb(68, 137, 68);
+  background-color: rgb(139, 181, 139);
+  border: 2px solid rgb(102, 100, 100);
   text-align: right;
   padding: 1em;
   margin-bottom: 10px;
   width: 85%;
+  height: 70px;
 }
 
 .operation {
-    height: .5em;
+  height: 20px;
 }
-
 
 .divider {
   margin: 0 auto;
   margin-bottom: 0.5em;
   display: block;
-  width: 90%;
-  border-top: 2px solid black;
+  width: 92%;
+  border-top: 2px solid rgb(102, 100, 100);
 }
 
 .container {
@@ -64,10 +92,7 @@ button:hover {
 button {
   width: 60px;
   height: 60px;
-}
-
-.btn__main {
-  border-radius: 5px;
+  font-weight: bold;
 }
 
 .btn__sub {

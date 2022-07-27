@@ -3,60 +3,78 @@ const operators = document.querySelectorAll(".operator");
 const operation = document.querySelector(".operation");
 const input = document.querySelector(".input");
 const equal = document.querySelector("#equal");
+const power = document.querySelector(".power")
 const resetBtn = document.querySelector(".btn_reset");
+const deleteBtn = document.querySelector(".btn_delete");
+const decimal = document.getElementById("#.");
 
-let operand,
-  num1,
-  num2 = null;
+let operand = null;
+let num1;
+let num2;
+let displayValue = null;
 
-const collectInput = (e) => {
+const collectFormatInput = (e) => {
   let num = e.target.id;
+  let inputText;
+  if (
+    (input.innerText == "0" && e.target.id == "0") ||
+    displayValue ||
+    (input.innerText.includes(".") && num == ".")
+  )
+    return;
   if (input.innerText === "0") {
     input.innerText = "";
   }
+
   input.innerText += num;
+  inputText = input.innerText;
+
   if (operand) {
-    num2 = parseInt(input.innerText);
+    num2 = parseFloat(inputText);
   } else {
-    num1 = parseInt(input.innerText);
+    num1 = parseFloat(inputText);
   }
-  console.log(num1, num2);
 };
 
 const getOperator = (e) => {
-  if (operand !== null) operate();
+  if (num1 === undefined || (num2 && operand)) return;
   operand = e.target.innerText;
-  displayOperation();
+  operate();
 };
 
 const operate = () => {
-  let result;
-  if (num2 === null) return;
-
+  if (operand === null) return;
   switch (operand) {
     case "÷":
-      result = divide();
+      displayValue = divide();
       break;
     case "×":
-      result = multiply();
+      displayValue = multiply();
       break;
     case "−":
-      result = subtract();
+      displayValue = subtract();
       break;
     case "+":
-      result = add();
+      displayValue = add();
       break;
   }
-  displayOperation(result);
+  handleDisplay(displayValue);
 };
 
-const displayOperation = (result) => {
-  if (num2 === null) {
+
+const handleDisplay = (displayValue) => {
+
+  if (displayValue) {
+    num1 = displayValue;
+    num2 = undefined;
+    operand = "";
+    operation.innerText = "";
+    input.innerText = `${num1}`;
+    return;
+  }
+  if (num2 === undefined) {
     operation.innerText = `${num1} ${operand}`;
     input.innerText = "0";
-  } else {
-    operation.innerText = `${num1} ${operand} ${num2}`;
-    input.innerText = result.toString();
   }
 };
 
@@ -76,16 +94,28 @@ const divide = () => {
   return num1 / num2;
 };
 
+
 const reset = () => {
   operation.innerText = "";
   input.innerText = "0";
   operand = null;
-  num1 = null;
-  num2 = null;
+  displayValue = null;
+  num1 = undefined;
+  num2 = undefined;
+};
+
+const clearEntry = () => {
+  if (displayValue == input.textContent) return;
+  if (input.innerText !== "0") {
+    input.innerText = input.innerText.slice(0, -1);
+  }
+  if (input.innerText === "") {
+    input.innerText = "0";
+  }
 };
 
 numberButtons.forEach((number) =>
-  number.addEventListener("click", collectInput)
+  number.addEventListener("click", collectFormatInput)
 );
 operators.forEach((operator) =>
   operator.addEventListener("click", getOperator)
@@ -93,3 +123,5 @@ operators.forEach((operator) =>
 
 equal.addEventListener("click", operate);
 resetBtn.addEventListener("click", reset);
+deleteBtn.addEventListener("click", clearEntry);
+
